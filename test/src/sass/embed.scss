@@ -1,4 +1,22 @@
-h1 {
-    color: red;
+@import 'variables/var-grid';
+
+@import 'general/media-mobile';
+
+@media screen and (max-width: 640px) {
+    h1 {
+        color: blue !important;
+    }
 }
 
+@media screen and (prefers-color-scheme: dark) {
+    h1 {
+        color: red !important;
+    }
+}
+
+
+@media screen and (max-width: 640px) {
+    img {
+        background-color: green !important;
+    }
+}

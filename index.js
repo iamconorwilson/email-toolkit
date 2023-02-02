@@ -1,71 +1,67 @@
-const path = require('path');
-const fs = require('fs');
-const glob = require('glob');
+import { log } from './src/functions/logger.js';
+import { init } from './src/functions/init.js';
 
-const { log } = require('./src/functions/logger');
-const { init } = require('./src/services');
+import path from 'path';
 
-let options = {
-    buildDir: './test/build',
-    templateDir: './test/src/templates',
-    sourceDir: './test/src',
-    dataDir: './test/src/data',
-    customExt: null,
-    customFilters: null,
+
+let options;
+let defaultOptions = {
+    dir: {
+        build: "./test/build",
+        source: "./test/src",
+    },
+    nunjucks: {
+        customExt: null,
+        customFilters: null,
+    },
+    postcss: {
+        plugins: [],
+    }
 };
 
-let state = init(options);
+try {
+    const imported = await import(path.resolve('./build.config.js'));
+    options = imported.default();
+} catch (e) {
+    console.log(e);
+    log('No build.config.js file found. Using default options.', 'warn');
+    options = defaultOptions;
+}
 
-let njk = state.njk;
+for (const [key, value] of Object.entries(defaultOptions)) {
+    if (!options.hasOwnProperty(key)) {
+        log(`No ${key} option found in build.config.js. Using default value: ${JSON.stringify(value)}`, 'warn');
+      options[key] = value;
+    } else if (typeof value === 'object') {
+        for (const [subkey, subvalue] of Object.entries(value)) {
+            if (!options[key].hasOwnProperty(subkey)) {
+                log(`No ${subkey} option found in build.config.js. Using default value: ${subvalue}`, 'warn');
+                options[key][subkey] = subvalue;
+            }
+        }
+    }
+  }
+
+Object.entries(options.dir)
+  .map(([key, value]) => (options.dir[key] = path.resolve(value)));
+
+
+let state = await init(options);
+
 let watch = state.watch;
-let app = state.app;
-let reload = state.reload;
-let sass = state.sassRender;
+let reload = state.livereload;
 
-const run = () => {
+const run = async () => {
     log('Running build...');
-    sassRender();
-    nunjucksRender();
+    await state.sass.render();
+    await state.postcss.render();
+    await state.passthrough.render();
+    await state.nunjucks.render();
+    await state.cssinline.render();
+    await state.cleanhtml.render();
     reload.refresh('*');
-    log('Build complete.');
+    log('Build complete.', 'success');
 }
-
-
-const nunjucksRender = () => {
-    log('Starting nunjucksRender')
-    glob(`${options.sourceDir}/*.njk`, (err, files) => {
-        let data = JSON.parse(fs.readFileSync(`${options.dataDir}/data.json`));
-
-        files.forEach((file) => {
-            let filePath = path.resolve(file);
-            let fileString = fs.readFileSync(filePath, 'utf8');
-            let rendered = njk.renderString(fileString, data);
-            let fileName = path.basename(file, '.njk') + '.html';
-            fs.writeFileSync(`${options.buildDir}/${fileName}`, rendered);
-        });
-    });
-    log('Finished nunjucksRender')
-}
-
-
-const sassRender = () => {
-    log('Starting sassRender')
-    glob(`${options.sourceDir}/sass/!(_*).scss`, (err, files) => {
-        files.forEach((file) => {
-            let filePath = path.resolve(file);
-            let fileString = fs.readFileSync(filePath, 'utf8');
-
-            //if filename is inline, output style expanded, else output style compressed
-            let outputStyle = path.basename(file, '.scss') === 'inline' ? 'expanded' : 'compressed';
-
-            let rendered = sass.compileString(fileString, { outputStyle: outputStyle });
-            let fileName = path.basename(file, '.scss') + '.css';
-            fs.writeFileSync(`${options.buildDir}/css/${fileName}`, rendered.css);
-        });
-    });
-    log('Finished sassRender')
-}
-
 
 
 watch.on('add', run).on('change', run)

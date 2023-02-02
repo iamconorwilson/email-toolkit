@@ -1,4 +1,4 @@
-const livereload = require('livereload');
+import livereload from 'livereload';
 
 class LiveReload {
     constructor(context) {
@@ -15,4 +15,4 @@ class LiveReload {
 
 }
 
-exports.LiveReload = LiveReload;
+export default LiveReload;

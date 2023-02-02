@@ -1,3 +1,19 @@
-body {
-  background: blue;
+.content-outer {
+  width: 100%;
+}
+
+.content-inner {
+  width: 640px;
+}
+.content-inner tbody > tr > td {
+  padding-left: 70px;
+  padding-right: 70px;
+}
+
+h1 {
+  color: red;
+}
+
+img {
+  background-color: red;
 }

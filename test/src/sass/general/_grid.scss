@@ -1,0 +1,16 @@
+@use "sass:math";
+
+.content-outer {
+    width: 100%;
+}
+
+.content-inner {
+    width: $outer-width;
+
+    & tbody > tr > td {
+        $padding: math.div($outer-width - $inner-width, 2);
+        padding-left: $padding;
+        padding-right: $padding;
+    }
+
+}

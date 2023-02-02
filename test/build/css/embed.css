@@ -1,3 +1,1 @@
-h1 {
-  color: red;
-}
+[data-ogsb] h1{color:red !important}@media screen and (max-width: 640px){.w100pc,.content-inner{width:100% !important;min-width:100% !important;max-width:1000px !important;height:auto !important}.mob-show{display:block !important}.mob-hide{display:none !important}.colsplit{width:100% !important;float:left !important;display:block !important}.colsplit-top{width:100% !important;display:table-row-group !important}.colsplit-bottom{width:100% !important;display:table-footer-group !important}.mobpad{padding-left:10.9375% !important;padding-right:10.9375% !important}#MessageViewBody,#MessageWebViewDiv{width:100% !important}h1{color:blue !important}img{background-color:green !important}}@media screen and (prefers-color-scheme: dark){h1{color:red !important}}

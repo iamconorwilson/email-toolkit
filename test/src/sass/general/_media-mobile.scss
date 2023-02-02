@@ -1,0 +1,49 @@
+@use 'sass:math';
+
+$padding: math.div($outer-width - $inner-width, 2);
+
+$mob-padding: math.div($padding, $outer-width) * 100%;
+
+
+@media screen and (max-width: $mobile-max) {
+    .w100pc, .content-inner {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 1000px !important;
+        height: auto !important;
+      }
+
+      .mob-show {
+        display: block !important;
+      }
+
+      .mob-hide {
+        display: none !important;
+      }
+
+      .colsplit {
+        width: 100% !important;
+        float: left !important;
+        display: block !important;
+      }
+
+      .colsplit-top {
+        width: 100% !important;
+        display: table-row-group !important;
+      }
+
+      .colsplit-bottom {
+        width: 100% !important;
+        display: table-footer-group !important;
+      }
+
+      .mobpad {
+        padding-left: $mob-padding !important;
+        padding-right: $mob-padding !important;
+      }
+
+      #MessageViewBody,
+      #MessageWebViewDiv {
+        width: 100% !important;
+      }
+}
