@@ -1,0 +1,9 @@
+{% set bt_classes = bt_classes if bt_classes else "button button-1" %}
+
+<table role="presentation" class="{{bt_classes}}" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td align="center">
+            <a href="{{button_link}}" target="_blank">{{button_title|safe}}</a>
+        </td>
+    </tr>
+</table>

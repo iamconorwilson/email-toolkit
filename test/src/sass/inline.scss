@@ -1,18 +1,11 @@
-@use 'data.json';
+@import     'variables/variables-colours';
+@import     'variables/variables-text';
+@import     'variables/variables-grid';
+@import     'variables/variables-buttons';
 
-@import 'variables/var-grid';
-@import 'general/grid';
+@import     'mixins/padding';
 
-h1 {
-    color: data.$color;
-}
+@import     'general/type';
+@import     'general/buttons';
 
-img {
-    background-color: data.$logo-background;
-}
-
-// table {
-//     cellpadding: 0;
-//     cellspacing: 0;
-//     border: 0;
-// }
+@import     'custom/custom-inline';

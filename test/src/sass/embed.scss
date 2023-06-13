@@ -1,22 +1,11 @@
-@import 'variables/var-grid';
+@import     'variables/variables-colours';
+@import 	'variables/variables-text';
+@import     'variables/variables-grid';
 
-@import 'general/media-mobile';
+@import     'mixins/padding';
+@import     'mixins/mobile-padding';
 
-@media screen and (max-width: 640px) {
-    h1 {
-        color: blue !important;
-    }
-}
+@import     'general/media-mobile';
+@import     'general/dark-mode';
 
-@media screen and (prefers-color-scheme: dark) {
-    h1 {
-        color: red !important;
-    }
-}
-
-
-@media screen and (max-width: 640px) {
-    img {
-        background-color: green !important;
-    }
-}
+@import     'custom/custom-embed';

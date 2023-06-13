@@ -1,12 +1,14 @@
 {
-  "name": "test",
+  "name": "email-pipeline",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bin/index.js",
   "scripts": {
-    "start": "node .",
     "dev": "nodemon . --ignore test/",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "email-pipeline": "./bin/index.js"
   },
   "type": "module",
   "keywords": [],
@@ -30,8 +32,10 @@
     "postcss": "^8.4.21",
     "postcss-sort-media-queries": "^4.3.0",
     "prettier": "^2.8.3",
+    "qrcode-terminal": "^0.12.0",
     "sass": "^1.57.1",
-    "serve-index": "^1.9.1"
+    "serve-index": "^1.9.1",
+    "serve-index-custom-directory": "^1.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

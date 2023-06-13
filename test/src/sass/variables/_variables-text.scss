@@ -1,0 +1,72 @@
+// CUSTOM FONT RULES
+
+@media screen {
+    @font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/opensans/v34/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2) format('woff2');
+      }
+  }
+
+// FONT STACKS
+$font_stack_1: 'Open Sans', Helvetica, Arial, sans-serif;
+
+
+//TEXT-XSM - Footer text
+.text-xsm {
+    font-family: $font_stack_1;
+    color: $color-dark;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    //letter-spacing: 0px;
+    a {
+        text-decoration: underline;
+        color: $color-2;
+    }
+}
+
+//TEXT-SM - Default text
+.text-sm {
+    font-family: $font_stack_1;
+    color: $color-dark;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 26px;
+    //letter-spacing: 0px;
+    a {
+        text-decoration: underline;
+        color: $color-2;
+    }
+}
+
+//TEXT-MD - Subheading text
+.text-md {
+    font-family: $font_stack_1;
+    color: $color-2;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 30px;
+    //letter-spacing: 0px;
+    a {
+        text-decoration: none;
+        color: $color-2;
+    }
+}
+
+
+//TEXT-LG - Heading text
+.text-lg {
+    font-family: $font_stack_1;
+    color: red;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 48px;
+    //letter-spacing: 0px;
+    a {
+        text-decoration: none;
+        color: $color-2;
+    }
+}

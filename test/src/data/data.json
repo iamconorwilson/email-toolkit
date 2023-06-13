@@ -1,8 +1,6 @@
 {
-    "title": "Email Title",
-    "color": "red",
-    "logo": {
-        "src": "https://via.placeholder.com/150",
-        "background": "red"
-    }
+	"page_title" : "Email Newsletter",
+	"company_name" : "Starter Template",
+	"company_website" : "https://actionrocket.co",
+	"path" : "snippets/tags/"
 }

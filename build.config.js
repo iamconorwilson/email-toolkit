@@ -1,23 +1,20 @@
 const options = () => {
   return {
     dir: {
-        build: "./test/build",
-        source: "./test/src",
-    },
-    nunjucks: {
-        customExt: null,
-        customFilters: null,
-    },
-    postcss: {
-        plugins: [],
+        src: "./src",
+        dest: "./build",
     },
     passthrough: [
         {
-            src: './test/src/passthrough/*',
-            dest: './test/build/passthrough'
+            src: './src/sass/passthrough/*',
+            dest: './build/css'
         }
-    ]
+    ],
+    server: {
+        qrCode: true,
+        port: 3030
+    }
   };
 };
 
-export default options;
+module.exports = options;

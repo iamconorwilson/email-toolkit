@@ -1,49 +1,49 @@
-@use 'sass:math';
-
-$padding: math.div($outer-width - $inner-width, 2);
-
-$mob-padding: math.div($padding, $outer-width) * 100%;
-
-
 @media screen and (max-width: $mobile-max) {
-    .w100pc, .content-inner {
-        width: 100% !important;
-        min-width: 100% !important;
-        max-width: 1000px !important;
-        height: auto !important;
-      }
 
-      .mob-show {
-        display: block !important;
-      }
+  .fill,
+  .w100pc {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 1000px !important;
+    height: auto !important;
+  }
 
-      .mob-hide {
-        display: none !important;
-      }
+  .mob-show,
+  .show {
+    display: block !important;
+    overflow: visible !important;
+    float: none !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: inherit !important;
+  }
 
-      .colsplit {
-        width: 100% !important;
-        float: left !important;
-        display: block !important;
-      }
+  .mob-hide,
+  .nomob {
+    display: none !important;
+  }
 
-      .colsplit-top {
-        width: 100% !important;
-        display: table-row-group !important;
-      }
+  .block,
+  .colsplit {
+    width: 100% !important;
+    min-width: 100% !important;
+    display: block !important;
+    clear: both !important;
+    float: left !important;
+  }
 
-      .colsplit-bottom {
-        width: 100% !important;
-        display: table-footer-group !important;
-      }
+  .colsplit-top {
+    width: 100% !important;
+    display: table-row-group !important;
+  }
 
-      .mobpad {
-        padding-left: $mob-padding !important;
-        padding-right: $mob-padding !important;
-      }
+  .colsplit-bottom {
+    width: 100% !important;
+    display: table-footer-group !important;
+  }
 
-      #MessageViewBody,
-      #MessageWebViewDiv {
-        width: 100% !important;
-      }
+  #MessageViewBody,
+  #MessageWebViewDiv {
+    width: 100% !important;
+  }
 }

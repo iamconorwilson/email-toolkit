@@ -1,0 +1,35 @@
+const options = () => {
+  return {
+    nunjucks: {
+        customExt: null,
+        customFilters: null,
+        customTemplates: null,
+    },
+    postcss: {
+        plugins: [],
+    },
+    passthrough: [
+        {
+            src: './src/passthrough/*',
+            dest: './build/passthrough'
+        }
+    ],
+    sass: {
+        customOpt: null,
+    },
+    cleanHtml: {
+        customOpt: null,
+    },
+    server: {
+        qrCode: true,
+        port: 3030,
+        middleware: []
+    },
+    dir: {
+        src: "./src",
+        dest: "./build",
+    }
+  };
+};
+
+module.exports = options;
