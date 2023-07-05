@@ -6,7 +6,7 @@ import { task } from '../functions/task.js';
 import { deepMerge } from '../functions/deepmerge.js';
 
 let defaultOpts = {
-    whitelist: [".External*",".ReadMsgBody",".yshortcuts",".Mso*","#outlook",".module*",".video*",".Singleton", "#MessageViewBody"],
+    whitelist: [".External*",".ReadMsgBody",".yshortcuts",".Mso*","#outlook",".module*",".video*",".Singleton", "#MessageViewBody", ".content*", "[data-ogsc]*", "[data-ogsb]*"],
     removeHTMLComments: false,
     uglify: false,
     htmlCrushOpts: {removeIndentations: false, removeLineBreaks: false}
@@ -25,18 +25,37 @@ class CleanHtml {
         return { render: this.render }
     }
 
+    // render() {
+    //     return new Promise((resolve) => {
+    //         task('cleanHtml', { src: this.buildDir + '/*.html', dest: this.buildDir }, (filePath, fileString) => {
+    //             let fileName = basename(filePath);
+    //             fileString = Buffer.from(fileString).toString('utf8');
+    //             let string = prettier.format(fileString, { parser: 'html', printWidth: 300 });
+
+    //             string = comb(string, this.combOpts).result;
+    //             //remove any empty lines
+    //             // let string = fileString.replace(/^\s*[\r\n]/gm, '');
+
+    //             return { fileName: fileName, string: string };
+    //         }, resolve);
+    //     });
+    // }
     render() {
         return new Promise((resolve) => {
-            task('cleanHtml', { src: this.buildDir + '/*.html', dest: this.buildDir }, (filePath, fileString) => {
-                let fileName = basename(filePath);
-                fileString = Buffer.from(fileString).toString('utf8');
-                let string = prettier.format(fileString, { parser: 'html', printWidth: 300 });
+            task('cleanHtml', async (utils) => {
+                let { getFiles, readFromFile, writeFile } = utils;
 
-                string = comb(string, this.combOpts).result;
-                //remove any empty lines
-                // let string = fileString.replace(/^\s*[\r\n]/gm, '');
+                let files = await getFiles(this.buildDir + '/*.html');
 
-                return { fileName: fileName, string: string };
+                files.forEach(async (file) => {
+                    let fileString = await readFromFile(file);
+                    fileString = Buffer.from(fileString).toString('utf8');
+                    let fileName = basename(file);
+                    let string = prettier.format(fileString, { parser: 'html', printWidth: 300 });
+
+                    string = comb(string, this.combOpts).result;
+                    await writeFile(this.buildDir, fileName, string);
+                });
             }, resolve);
         });
     }

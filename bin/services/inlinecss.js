@@ -28,14 +28,20 @@ class CssInline {
     init() {
         return { render: this.render }
     }
-
     render() {
         return new Promise((resolve) => {
-            task('cssInline', { src: this.buildDir + '/*.html', dest: this.buildDir }, async (filePath, fileString) => {
-                let string = '';
-                await this.inlineCss(fileString, this.inlineOpts).then((html) => {string = html});
-                let fileName = basename(filePath);
-                return { fileName: fileName, string: string };
+            task('cssInline', async (utils) => {
+                let { getFiles, readFromFile, writeFile } = utils;
+
+                let files = await getFiles(this.buildDir + '/*.html');
+
+                files.forEach(async (file) => {
+                    let fileString = await readFromFile(file);
+                    let fileName = basename(file);
+                    let string = '';
+                    await this.inlineCss(fileString, this.inlineOpts).then((html) => {string = html});
+                    await writeFile(this.buildDir, fileName, string);
+                });
             }, resolve);
         });
     }

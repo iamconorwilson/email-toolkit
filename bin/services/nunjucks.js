@@ -50,11 +50,21 @@ class Nunjucks {
 
     render() {
         return new Promise((resolve) => {
-            task('nunjucksRender', { src: this.sourceDir + '/*.njk', dest: this.buildDir }, (filePath, fileString) => {
-                let data = {css: getFilepaths(this.buildDir, 'css'), ...getData(this.dataDir)};
-                let fileName = basename(filePath, '.njk') + '.html';
-                let string = this.env.render(filePath, data);
-                return { fileName: fileName, string: string };
+            task('nunjucksRender', async (utils) => {
+                let { getFiles, readFromFile, writeFile } = utils;
+
+                let files = await getFiles(this.sourceDir + '/*.njk');
+                
+                files.forEach(async (file) => {
+                    let data = {css: getFilepaths(this.buildDir, 'css'), ...getData(this.dataDir)};
+                    
+                    let fileName = basename(file, '.njk') + '.html';
+                    
+                    let fileString = await readFromFile(file);
+                    
+                    let string = this.env.renderString(fileString, data);
+                    await writeFile(this.buildDir, fileName, string);
+                });
             }, resolve);
         });
     }

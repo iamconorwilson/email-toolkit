@@ -1,10 +1,8 @@
 import * as sass from 'sass';
 import { basename } from 'path';
-import { fs } from fs;
 
 import { task } from '../functions/task.js';
 import { getSassData } from '../functions/getdata.js';
-import { removeFiles } from '../functions/removefiles.js';
 import { deepMerge } from '../functions/deepmerge.js';
 
 class Sass {
@@ -24,17 +22,20 @@ class Sass {
         return { render: this.render }
     }
     render() {
-        // let jsonImporter = new getSassData({ dataDir: this.dataDir });
         return new Promise((resolve) => {
-            removeFiles(this.buildDir + '/css');
-            task('sassRender', { src: this.sourceDir + '/sass/!(_*).scss', dest: this.buildDir + '/css' }, (filePath, fileString) => {
-                let outputStyle = basename(filePath, '.scss') === 'inline' ? 'expanded' : 'compressed';
-                let fileName = basename(filePath, '.scss') + '.css';
+            task('sass', async (utils) => {
+                let { getFiles, writeFile } = utils;
 
-                const opts = this.sassOpts ?? { style: outputStyle, importers: [ new getSassData({ dataDir: this.dataDir }) ] };
+                let files = await getFiles(this.sourceDir + '/sass/!(_*).scss');
+                
+                files.forEach(async (file) => {
+                    let outputStyle = basename(file, '.scss') === 'inline' ? 'expanded' : 'compressed';
+                    let fileName = basename(file, '.scss') + '.css';
+                    const opts = this.sassOpts ?? { style: outputStyle, importers: [ new getSassData({ dataDir: this.dataDir }) ] };
 
-                let string = this.sass.compile(filePath, opts).css;
-                return { fileName: fileName, string: string };
+                    let string = this.sass.compile(file, opts).css;
+                    await writeFile(this.buildDir + '/css', fileName, string);
+                });
             }, resolve);
         });
     }

@@ -1,3 +1,12 @@
+@media screen {
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/opensans/v34/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2) format("woff2");
+  }
+}
 .text-xsm {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   color: #333333;
@@ -694,14 +703,4 @@
   line-height: 100%;
   margin-bottom: 0;
   mso-para-margin-bottom: 0px;
-}
-
-@media screen {
-  @font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(https://fonts.gstatic.com/s/opensans/v34/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2) format("woff2");
-  }
 }

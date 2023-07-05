@@ -1,14 +1,18 @@
 const options = () => {
   return {
     dir: {
-        src: "./src",
-        dest: "./build",
+        src: "./test/src",
+        dest: "./test/build",
     },
     passthrough: [
         {
-            src: './src/sass/passthrough/*',
-            dest: './build/css'
-        }
+            src: './test/src/sass/passthrough/*',
+            dest: './test/build/css'
+        },
+        {
+          src: './test/src/assets/images/**/*',
+          dest: './test/build/images'
+      }
     ],
     server: {
         qrCode: true,
@@ -17,4 +21,4 @@ const options = () => {
   };
 };
 
-module.exports = options;
+export default options;
