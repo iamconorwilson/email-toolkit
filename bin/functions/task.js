@@ -5,8 +5,10 @@ import { log } from '../functions/logger.js';
 import { displayError } from '../functions/errors.js';
 
 
-const task = (name, paths, func, resolve) => {
+const task = (name, paths, func, resolve, opts) => {
     const { src , dest } = paths;
+
+    const { type } = opts || { type: 'render' };
 
     const start = process.hrtime.bigint();
 

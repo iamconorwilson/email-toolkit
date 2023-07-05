@@ -13,13 +13,21 @@ const plugin = (opts = {}) => {
             //copy the rule
             const newRule = rule.clone();
 
-            //if rule selector contains a class, add the data-ogsc attribute
-            if (newRule.selector.includes('.')) {
-              newRule.selector = `[data-ogsc] ${newRule.selector}`;
+            //if selector has multiple, split by comma
+            if (newRule.selector.includes(',')) {
+              const selectors = newRule.selector.split(',');
+
+              selectors.forEach((selector, index) => {
+                selectors[index] = `[data-ogsb] ${selector.trim()}`
+              });
+
+              newRule.selector = selectors.join(', ');
             } else {
+              //add selector
               newRule.selector = `[data-ogsb] ${newRule.selector}`;
             }
 
+            //append rule to document
             atRule.parent.insertAfter(prevRootRule, newRule);
 
             prevRootRule = newRule;
