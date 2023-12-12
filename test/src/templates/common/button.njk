@@ -1,0 +1,22 @@
+{% set button_link = button_link if button_link else base.url %}
+{% set button_text = button_text if button_text else "Button Text" %}
+{% set button_align = button_align if button_align else "center" %}
+{% set button_style = button_style if button_style else "button-red" %}
+
+<table border="0" cellpadding="0" cellspacing="0" role="none" width="100%">
+    <tr>
+        <td align="{{button_align}}" class="transparent" style="padding-top: 6px;">
+            <table border="0" cellpadding="0" cellspacing="0" role="none">
+                <tr>
+                    <td class="button transparent {{button_style}}">
+                        <a href="{{ button_link }}">
+                            <!--[if mso]><i style="mso-font-width:125%;mso-text-raise:200%" hidden>&#8195;</i><span style="mso-text-raise:100%;"><![endif]-->
+                            {{ button_text }}
+                            <!--[if mso]></span><i style="mso-font-width:125%;" hidden>&#8195;&#8203;</i><![endif]-->
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

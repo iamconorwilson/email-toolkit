@@ -24,20 +24,20 @@
     "fs": "^0.0.1-security",
     "glob": "^8.1.0",
     "html-crush": "^6.0.6",
-    "inline-css": "^4.0.1",
+    "inline-css": "^4.0.2",
     "ip": "^1.1.8",
     "livereload": "^0.9.3",
     "nunjucks": "^3.2.3",
     "path": "^0.12.7",
     "postcss": "^8.4.21",
     "postcss-sort-media-queries": "^4.3.0",
-    "prettier": "^2.8.3",
+    "prettier": "^3.0.3",
     "qrcode-terminal": "^0.12.0",
     "sass": "^1.57.1",
     "serve-index": "^1.9.1",
     "serve-index-custom-directory": "^1.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.0.1"
   }
 }

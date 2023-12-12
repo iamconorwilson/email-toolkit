@@ -8,7 +8,7 @@ const removeFiles = (dir) => {
     glob(dir, async (err, files) => {
         if (err) throw err;
 
-        files.forEach((file) => {
+        await files.forEach((file) => {
             
             //if file is a directory
             if (statSync(file).isDirectory()) {

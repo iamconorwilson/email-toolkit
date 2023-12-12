@@ -1,51 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
   <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
-    <meta name="x-apple-disable-message-reformatting" />
+    <meta name="x-apple-disable-message-reformatting"/>
 
-    <!-- Dark mode meta tags - remove unless adding Dark mode CSS -->
-    <meta name="color-scheme" content="light dark" />
-    <meta name="supported-color-schemes" content="light dark" />
+    <meta name="color-scheme" content="light dark"/>
+    <meta name="supported-color-schemes" content="light dark"/>
 
     <!--Built in London by the ActionRocket team - @ActionRocket -->
-    <title>{{ data.company_name }}</title>
+    <title>ActionRocket</title>
 
-
-     <link rel="stylesheet" href="css/inline.css">
-
-     {% for key, value in css %}
-        {% if key != 'inline' %}
-          <style type="text/css">
-            {% include "../../build/" + value %}
-          </style>
-        {% endif %}
-     {% endfor %}
-
-    <!--[if mso]>
-        <style>
-        a {
-            text-decoration: none;
-        }
+    {% for key, value in css %}
+      {% if "inline" not in value %}
+        <style type="text/css">
+          {% include "../../build/" + value %}
         </style>
-        <noscript>
-        <xml>
-            <o:OfficeDocumentSettings>
-            <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-        </xml>
-        </noscript>
+      {% endif %}
+    {% endfor %}
+
+    <link rel="stylesheet" href="css/inline.css">
+
+    <!--[if mso]> 
+    <style> 
+      a { text-decoration: none; } 
+      ul, li { list-style-type: none; } 
+    </style> 
+    <noscript> 
+      <xml> 
+        <o:OfficeDocumentSettings> 
+          <o:PixelsPerInch>96</o:PixelsPerInch> 
+        </o:OfficeDocumentSettings> 
+      </xml> 
+    </noscript> 
     <![endif]-->
   </head>
-  <body class="body">
-    <div role="article" aria-roledescription="email" aria-label="email name" lang="en" dir="ltr">
-      {% include "templates/partials/preheader.njk" %}
+  <body class="body" xml:lang="en" style="background-color: #f3f3f3;">
+    <div role="article" aria-roledescription="email" aria-label="email name" lang="en" dir="ltr" style="font-size:medium; font-size:max(16px, 1rem)">
       {% block content %}
-            <!-- HTML Content Goes Here -->
+        <!-- HTML Content Goes Here -->
       {% endblock %}
-    
     </div>
   </body>
 </html>

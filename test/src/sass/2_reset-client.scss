@@ -1,0 +1,26 @@
+div[style*="margin: 16px 0"] {
+    margin: 0 !important;
+}
+
+a[x-apple-data-detectors] {
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
+span.MsoHyperlink {
+    color: inherit !important;
+    mso-style-priority: 99 !important;
+}
+
+span.MsoHyperlinkFollowed {
+    color: inherit !important;
+    mso-style-priority: 99 !important;
+}
+
+input {
+    display: none;
+}

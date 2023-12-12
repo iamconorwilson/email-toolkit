@@ -1,0 +1,58 @@
+<!-- full-width image -->
+<table role="none" cellpadding="0" cellspacing="0" border="0" style="width: 100%; background-color: #f3f3f3;">
+    <tr>
+        <td align="center">
+            <table class="w100pc outer" role="none" cellpadding="0" cellspacing="0" border="0" style="width: 800px; background-color: #424242">
+                <tr>
+                    <td align="left" class="mobpad" style="padding: 60px 80px;">
+                        
+                        <h2 style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 30px; line-height: 42px; font-weight: bold; margin: 0 0 10px; color: #fbac30;">
+                            Reading room
+                        </h2>
+                        <p style="font-family: 'Open Sans', Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; font-weight: 300; margin: 0 0 20px; color: #ffffff;">
+                            Grab a cuppa and take your break from behind the screen with our timely articles we thought you’d&nbsp;enjoy… 
+                        </p>
+                        
+                        <table border="0" cellspacing="0" cellpadding="0" role="none">
+                        {% for item in range(0,2) %}
+                            <tr>
+                                <td style="padding: 40px 0;">
+                                    <table border="0" cellspacing="0" cellpadding="0" role="none">
+                                        <tr>
+                                            <td class="colsplit">
+                                                <a href="">
+                                                    <img src="https://via.placeholder.com/420x360" alt="" width="210" style="display: block; border-radius: 10px; overflow: hidden;">
+                                                </a>
+                                            </td>
+                                            <td class="colsplit" style="width: 50px; height: 30px;">&nbsp;</td>
+                                            <td class="colsplit">
+                                                <span style="font-family: 'Open Sans', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 26px; font-weight: bold; color: #fbac30; text-transform: uppercase; letter-spacing: 2px;">// Category</span>
+                                                <h3 style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 21px; line-height: 31px; font-weight: bold; margin: 12px 0 10px; color: #ffffff;">Article headline lorem ipsum dolor sit amet</h3>
+                                                <p style="font-family: 'Open Sans', Arial, Helvetica, sans-serif; font-size: 16px; line-height: 26px; font-weight: 300; margin: 0; color: #ffffff;">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do. 
+                                                    <a href="#" style="color: #fbac30; text-decoration: underline;">Read more.</a>
+                                                </p>
+                                                
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            
+                            {% if not loop.last %}
+                            <tr>
+                                <td>
+                                    <hr style="margin: 0; border-width: 0; background: #d9cdc2; color: #d9cdc2; height:2px">
+                                </td>
+                            </tr>
+                            
+                            {% endif %}
+                        {% endfor %}
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

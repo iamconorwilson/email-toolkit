@@ -9,10 +9,10 @@ const options = () => {
             src: './test/src/sass/passthrough/*',
             dest: './test/build/css'
         },
-        {
-          src: './test/src/assets/images/**/*',
-          dest: './test/build/images'
-      }
+        // {
+        //   src: './test/src/assets/images/**/*',
+        //   dest: './test/build/images'
+        // }
     ],
     server: {
         qrCode: true,
@@ -21,4 +21,4 @@ const options = () => {
   };
 };
 
-export default options;
+module.exports = options;

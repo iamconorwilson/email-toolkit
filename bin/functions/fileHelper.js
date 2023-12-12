@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFileSync } from 'fs';
 import { dirname } from 'path';
 import glob from 'glob';
+import { log } from '../functions/logger.js';
 
 
 const getFiles = (src) => {
@@ -56,4 +57,4 @@ const findCommonRoot = (paths) => {
 
 
 
-export { getFiles, readFromFile, writeFile, findCommonRoot };
+export { getFiles, readFromFile, writeFile, findCommonRoot, log };

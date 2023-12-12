@@ -1,0 +1,67 @@
+:root {
+  color-scheme: light dark;
+  supported-color-schemes: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  .lightimage {
+    display: none !important;
+  }
+  .darkimage {
+    display: block !important;
+  }
+  td {
+    background-color: rgb(21, 19, 18) !important;
+  }
+  th {
+    background-color: rgb(21, 19, 18) !important;
+  }
+  * {
+    color: rgb(255, 255, 255) !important;
+  }
+  .light {
+    background-color: transparent !important;
+  }
+  .button td {
+    background-color: #6d6d6d !important;
+    background-image: linear-gradient(rgb(109, 109, 109), rgb(109, 109, 109)) !important;
+    border-color: #6d6d6d !important;
+  }
+  .hidebg {
+    background-image: none !important;
+  }
+}
+
+[data-ogsb] .lightimage {
+    display: none !important;
+  }
+
+[data-ogsb] .darkimage {
+    display: block !important;
+  }
+
+[data-ogsb] td {
+    background-color: rgb(21, 19, 18) !important;
+  }
+
+[data-ogsb] th {
+    background-color: rgb(21, 19, 18) !important;
+  }
+
+[data-ogsb] * {
+    color: rgb(255, 255, 255) !important;
+  }
+
+[data-ogsb] .light {
+    background-color: transparent !important;
+  }
+
+[data-ogsb] .button td {
+    background-color: #6d6d6d !important;
+    background-image: linear-gradient(rgb(109, 109, 109), rgb(109, 109, 109)) !important;
+    border-color: #6d6d6d !important;
+  }
+
+[data-ogsb] .hidebg {
+    background-image: none !important;
+  }

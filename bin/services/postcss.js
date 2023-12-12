@@ -25,29 +25,30 @@ class PostCss {
     init() {
         return { render: this.render }
     }
-    render() {
-        return new Promise((resolve) => {
-            task('postCss', async (utils) => {
-                let { getFiles, readFromFile, writeFile } = utils;
-
-                let files = await getFiles(this.buildDir + '/css/*.css');
+    async render() {
+        await task('postCss', async (utils) => {
+            
+            
+            let { getFiles, readFromFile, writeFile } = utils;
+        
+            let files = await getFiles(this.buildDir + '/css/*.css');
+            
+            for (const file of files) {
+                let fileString = await readFromFile(file);
+                let fileName = basename(file);
                 
-                files.forEach(async (file) => {
-
-                    let fileString = await readFromFile(file);
-                    let fileName = basename(file);
-                    let string = '';
-                    await this.postcss(this.postcssPlugins)
-                    .process(fileString, { from: file, to: file })
-                    .then((result) => {
-                        result.warnings().forEach((warn) => {
-                            log(warn.toString(), 'warn');
-                        });
-                        string = result.css;
-                    });
-                    await writeFile(this.buildDir + '/css/', fileName, string);
+                const result = await this.postcss(this.postcssPlugins)
+                    .process(fileString, { from: file, to: file });
+        
+                result.warnings().forEach((warn) => {
+                    log(warn.toString(), 'warn');
                 });
-            }, resolve);
+        
+                
+                await writeFile(this.buildDir + '/css/', fileName, result.css);
+            }
+        
+            
         });
     }
 }

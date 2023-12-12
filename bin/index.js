@@ -17,17 +17,27 @@ let reload = state.livereload;
 
 const run = async () => {
 
-    removeFiles(options.dir.dest + '/**/*');
+    // removeFiles(options.dir.dest + '/**/*');
 
+    
     log('Running build...');
-    await state.sass.render();
-    await state.postcss.render();
-    await state.passthrough.render();
-    await state.nunjucks.render();
-    await state.inlinecss.render();
-    await state.cleanhtml.render();
-    reload.refresh('*');
-    log('Build complete.', 'success');
+    
+    try {
+        await state.sass.render();
+        await state.postcss.render();
+        await state.passthrough.render();
+        await state.nunjucks.render();
+        await state.inlinecss.render();
+        await state.cleanhtml.render();
+        reload.refresh('*');
+        log('Build complete.', 'success');
+    } catch (error) {
+        log(error, 'error');
+        process.exit(1);
+    }
+
+
+    
 }
 
 const debouncedRun = debounce(run, 500);

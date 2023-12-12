@@ -1,15 +1,14 @@
-import { comb } from 'email-comb';
+import { comb, defaults } from 'email-comb';
 import { basename } from 'path';
 import prettier from 'prettier';
 
 import { task } from '../functions/task.js';
 import { deepMerge } from '../functions/deepmerge.js';
 
+
+//add default whitelist with [data-ogsb] and [data-ogsc] attributes
 let defaultOpts = {
-    whitelist: [".External*",".ReadMsgBody",".yshortcuts",".Mso*","#outlook",".module*",".video*",".Singleton", "#MessageViewBody", ".content*", "[data-ogsc]*", "[data-ogsb]*"],
-    removeHTMLComments: false,
-    uglify: false,
-    htmlCrushOpts: {removeIndentations: false, removeLineBreaks: false}
+    whitelist: defaults.whitelist.concat(['[data-ogsb]*', '[data-ogsc]*', '.content*'])
 }
 
 class CleanHtml {
@@ -25,38 +24,34 @@ class CleanHtml {
         return { render: this.render }
     }
 
-    // render() {
-    //     return new Promise((resolve) => {
-    //         task('cleanHtml', { src: this.buildDir + '/*.html', dest: this.buildDir }, (filePath, fileString) => {
-    //             let fileName = basename(filePath);
-    //             fileString = Buffer.from(fileString).toString('utf8');
-    //             let string = prettier.format(fileString, { parser: 'html', printWidth: 300 });
+    async render() {
+        await task('cleanHtml', async (utils) => {
+            let { getFiles, readFromFile, writeFile, log } = utils;
+        
+            let files = await getFiles(this.buildDir + '/*.html');
+        
+            for (const file of files) {
+                let fileString = await readFromFile(file);
+                fileString = Buffer.from(fileString).toString('utf8');
+                let fileName = basename(file);
 
-    //             string = comb(string, this.combOpts).result;
-    //             //remove any empty lines
-    //             // let string = fileString.replace(/^\s*[\r\n]/gm, '');
+                //remove <tbody> tags
+                fileString = await fileString.replace(/<tbody>/g, '');
+                fileString = await fileString.replace(/<\/tbody>/g, '');
+        
+                // Apply comb
+                let combResult = comb(fileString, this.combOpts);
 
-    //             return { fileName: fileName, string: string };
-    //         }, resolve);
-    //     });
-    // }
-    render() {
-        return new Promise((resolve) => {
-            task('cleanHtml', async (utils) => {
-                let { getFiles, readFromFile, writeFile } = utils;
+                log(`Cleaned ${fileName} removing ${combResult.deletedFromHead.length} from head and ${combResult.deletedFromBody.length} from body.`)
 
-                let files = await getFiles(this.buildDir + '/*.html');
+                let combString = combResult.result;
 
-                files.forEach(async (file) => {
-                    let fileString = await readFromFile(file);
-                    fileString = Buffer.from(fileString).toString('utf8');
-                    let fileName = basename(file);
-                    let string = prettier.format(fileString, { parser: 'html', printWidth: 300 });
 
-                    string = comb(string, this.combOpts).result;
-                    await writeFile(this.buildDir, fileName, string);
-                });
-            }, resolve);
+                // Then apply prettify
+                let formattedString = await prettier.format(combString, { parser: 'html', printWidth: 900, htmlWhitespaceSensitivity: 'ignore' });
+        
+                await writeFile(this.buildDir, fileName, formattedString);
+            }
         });
     }
 }

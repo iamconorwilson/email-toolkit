@@ -1,0 +1,20 @@
+
+{# Extend template and populate content block #}
+{% extends "templates/template.njk" %}
+
+{% block content %}
+
+{% include "templates/components/01_header.html" %}
+
+{% include "templates/components/02_hero.html" %}
+
+{% include "templates/components/03_intro.html" %}
+
+{% include "templates/components/04_case-study.html" %}
+
+{% include "templates/components/05_reading-room.html" %}
+
+{% include "templates/components/06_quote.html" %}
+
+
+{% endblock %}

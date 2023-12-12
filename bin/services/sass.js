@@ -21,22 +21,20 @@ class Sass {
     init() {
         return { render: this.render }
     }
-    render() {
-        return new Promise((resolve) => {
-            task('sass', async (utils) => {
-                let { getFiles, writeFile } = utils;
-
-                let files = await getFiles(this.sourceDir + '/sass/!(_*).scss');
-                
-                files.forEach(async (file) => {
-                    let outputStyle = basename(file, '.scss') === 'inline' ? 'expanded' : 'compressed';
-                    let fileName = basename(file, '.scss') + '.css';
-                    const opts = this.sassOpts ?? { style: outputStyle, importers: [ new getSassData({ dataDir: this.dataDir }) ] };
-
-                    let string = this.sass.compile(file, opts).css;
-                    await writeFile(this.buildDir + '/css', fileName, string);
-                });
-            }, resolve);
+    async render() {
+        await task('sass', async (utils) => {
+            let { getFiles, writeFile } = utils;
+        
+            let files = await getFiles(this.sourceDir + '/sass/!(_*).scss');
+            
+            for (const file of files) {
+                let outputStyle = 'expanded';
+                let fileName = basename(file, '.scss') + '.css';
+                const opts = this.sassOpts ?? { style: outputStyle, importers: [ new getSassData({ dataDir: this.dataDir }) ] };
+        
+                let string = this.sass.compile(file, opts).css;
+                await writeFile(this.buildDir + '/css', fileName, string);
+            }
         });
     }
 }
