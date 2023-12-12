@@ -9,7 +9,7 @@ import { task } from '../functions/task.js';
 import { log } from '../functions/logger.js';
 
 // const defaultPlugins = [ autoprefixer, sortMediaQueries({ sort: 'desktop-first' }), emailDarkmode ];
-const defaultPlugins = [ autoprefixer, emailDarkmode ];
+const defaultPlugins = [ autoprefixer, sortMediaQueries({ sort: 'desktop-first' }), emailDarkmode ];
 
 class PostCss {
     constructor(context) {
