@@ -1,4 +1,5 @@
 import path from "path";
+import { log } from './logger.js';
 
 const setOpts = async () => {
   let options;

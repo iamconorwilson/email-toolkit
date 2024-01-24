@@ -17,9 +17,6 @@ let reload = state.livereload;
 
 const run = async () => {
 
-    // removeFiles(options.dir.dest + '/**/*');
-
-    
     log('Running build...');
     
     try {
@@ -40,9 +37,13 @@ const run = async () => {
     
 }
 
+//remove all files in build directory on first run
+await removeFiles(options.dir.dest + '/**/*');
+
 const debouncedRun = debounce(run, 500);
 
 watch.on('add', debouncedRun).on('change', debouncedRun)
 
-run();
+await run();
+
 
