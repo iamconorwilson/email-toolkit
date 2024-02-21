@@ -13,9 +13,8 @@ program
     .description('A CLI for generating new projects');
 
 const loadPlugins = async () => {
-    const pluginsDirectory = path.join(rootDirectory, 'plugins'); // Construct the absolute path to the plugins directory
 
-    console.log('Reading plugins from:', pluginsDirectory);
+    const pluginsDirectory = path.join(rootDirectory, 'plugins'); // Construct the absolute path to the plugins directory
 
     //read all directories in plugins directory
     const plugins = fs.readdirSync(pluginsDirectory);
@@ -27,7 +26,6 @@ const loadPlugins = async () => {
 
         //if index.js exists, import the command function and run it
         if (fs.existsSync(pluginFile)) {
-            console.log('Loading plugin:', plugin);
             const { default: command } = await import(pluginFile);
             command(program);
         }

@@ -28,6 +28,8 @@ let lrport = 35729;
 
 const run = (options) => {
 
+    console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Serve')}`);
+
     const app = express();
 
     //if port null set to options.port
