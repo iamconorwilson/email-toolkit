@@ -10,12 +10,12 @@ Syntax: `emlpipe config`
 
 Allows for updating the credentials used to send test emails.
 
-## send
+### send
 Syntax: `emlpipe send`
 
 Send tests of HTML emails from the command line, using SMTP credentials set up using the config command.
 
-## serve
+### serve
 Syntax: `emlpipe serve`
 
 Options:
