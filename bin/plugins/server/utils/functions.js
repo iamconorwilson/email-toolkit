@@ -8,7 +8,6 @@ const { address } = ip;
 
 //log server info to console
 const serverLog = (port, qr) => {
-    console.log('qr is', qr);
     let local = `http://localhost:${port}`;
     let ext = `http://${address()}:${port}`;
 
