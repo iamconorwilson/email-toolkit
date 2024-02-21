@@ -4,7 +4,7 @@ import connectLiveReload from 'connect-livereload';
 import chokidar from 'chokidar';
 import { render } from 'serve-index-custom-directory'
 import { serverLog, log, createLRServer } from './utils/functions.js';
-
+import chalk from 'chalk';
 
 //COMMAND
 const command = (program) => {

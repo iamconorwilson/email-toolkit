@@ -61,7 +61,7 @@ const createLRServer = (lrport) => {
         const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Refreshing files...`).start();
         lrserver.refresh('*')
         setTimeout(() => {
-            spinner.succeed(`${chalk.bold('Files refreshed')}`);
+            spinner.succeed(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Files refreshed')}`);
         }, 500);
     }
 

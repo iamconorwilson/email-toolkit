@@ -1,7 +1,7 @@
 {
   "name": "email-pipeline-lite",
   "version": "0.0.1",
-  "description": "A suite of CL tools tailored for email development",
+  "description": "A suite of command line tools tailored for email development",
   "main": "index.js",
   "type": "module",
   "bin": {
