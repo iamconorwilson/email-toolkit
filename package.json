@@ -1,6 +1,6 @@
 {
   "name": "email-pipeline-lite",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A suite of command line tools tailored for email development",
   "main": "index.js",
   "type": "module",
@@ -21,11 +21,13 @@
     "express": "^4.18.2",
     "inquirer": "^9.2.15",
     "ip": "^2.0.1",
+    "jsdom": "^24.0.0",
     "livereload": "^0.9.3",
     "nodemailer": "^6.9.9",
     "ora": "^8.0.1",
     "qrcode-terminal": "^0.12.0",
     "serve-index": "^1.9.1",
-    "serve-index-custom-directory": "^1.0.1"
+    "serve-index-custom-directory": "^1.0.1",
+    "ssh2-sftp-client": "^10.0.3"
   }
 }

@@ -1,0 +1,13 @@
+{
+    "send": {
+        "email": "xxx",
+        "password": "xxx"
+    },
+    "upload": {
+        "host": "xxx",
+        "user": "xxx",
+        "password": "xxx",
+        "base_path": "xxx",
+        "public_url": "xxx"
+    }
+}

@@ -1,14 +1,10 @@
 import inquirer from "inquirer";
 import fs from "fs";
-import path from "path";
 import nodemailer from "nodemailer";
-import { fileURLToPath } from 'url';
 import { randomUUID } from "crypto";
 import ora from 'ora';
 import chalk from 'chalk';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { loadConfig } from "../../functions.js";
 
 const command = (program) => {
     program
@@ -21,10 +17,11 @@ const command = (program) => {
 }
 
 const run = (options) => {
-
     console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Send')}`);
 
     let filePath = '';
+
+    const config = loadConfig();
 
     fs.readdir(process.cwd(), (err, files) => {
         if (err) {
@@ -42,7 +39,7 @@ const run = (options) => {
             {
                 type: 'input',
                 name: 'to',
-                message: 'Enter email address to send to:',
+                message: 'Enter email address(es) to send to (comma separated):',
             }
         ]).then((answers) => {
 
@@ -55,7 +52,13 @@ const run = (options) => {
             console.log(`[${chalk.magentaBright('email-pipeline')}] Sending file: ${fileName}`);
 
             //read secret from secrets.json in root of package
-            let { credentials } = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../secrets.json"), 'utf8'));
+            let credentials = config.send;
+
+            //if no credentials, exit and warn user
+            if (!credentials) {
+                console.error(`[${chalk.magentaBright('email-pipeline')}] No credentials found in config file.`);
+                process.exit(1);
+            }
 
             // Set up nodemailer...
             let transporter = nodemailer.createTransport({
@@ -63,8 +66,8 @@ const run = (options) => {
                 'port': 465,
                 'secure': true,
                 'auth': {
-                    'user': credentials.test_email,
-                    'pass': credentials.test_password,
+                    'user': credentials.email,
+                    'pass': credentials.password,
                 }
             });
 
@@ -75,7 +78,7 @@ const run = (options) => {
                 from: credentials.test_email,
                 to: to,
                 subject: `Test Email: ${fileName}`,
-                text: 'This is a test email sent from Email Pipeline! If you are seeing this, something went wrong.',
+                text: 'This is a test email sent from Email Pipeline! If you are seeing this, change your client settings to view the HTML part of this email.',
                 html: fileContents,
                 headers: {
                     References: randomUUID()
