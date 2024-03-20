@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const rootDirectory = path.resolve(__dirname); // Get the root directory of the application
 const homeDirectory = os.homedir(); // Get the user's home directory
 
-const command = (program, config) => {
+const command = (program) => {
     program
         .command('config')
         .description('Create a new config file')
@@ -18,7 +18,7 @@ const command = (program, config) => {
 
 }
 
-const run = () => {
+const run = async () => {
     console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Config')}`);
     
     //check for existing config file
@@ -26,29 +26,25 @@ const run = () => {
 
     //if config file exists, ask user if they want to overwrite
     if (fs.existsSync(configFile)) {
-        inquirer.prompt([
+        const answers = await inquirer.prompt([
             {
                 type: 'confirm',
                 name: 'overwrite',
                 message: 'Config file already exists. Overwrite?',
                 default: false,
             }
-        ]).then((answers) => {
-            if (answers.overwrite) {
-                createConfig(configFile);
-                process.exit(0);
-            } else {
-                console.log(`[${chalk.magentaBright('email-pipeline')}] Existing config file not overwritten.`);
-                process.exit(0);
-            }
+        ]);
 
-        });
-    } else {
-        createConfig(configFile);
-        process.exit(0);
+        if (!answers.overwrite) {
+            console.log(`[${chalk.magentaBright('email-pipeline')}] Existing config file not overwritten.`);
+            process.exit(0);
+        }
     }
 
+    createConfig(configFile);
+    process.exit(0);
 }
+
 
 const createConfig = (configFile) => {
     fs.copyFileSync(path.join(rootDirectory, '../../../config.json.example'), configFile);

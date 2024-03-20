@@ -40,6 +40,15 @@ const run = (options) => {
                 type: 'input',
                 name: 'to',
                 message: 'Enter email address(es) to send to (comma separated):',
+                validate: (input) => {
+                    const valid = (email) => {
+                        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return re.test(String(email).toLowerCase());
+                    }
+                    let emails = input.split(',').map(e => e.trim());
+                    let invalidEmails = emails.filter(e => !valid(e));
+                    return invalidEmails.length === 0 ? true : `Invalid email(s): ${invalidEmails.join(', ')}`;
+                }
             }
         ]).then((answers) => {
 
@@ -84,7 +93,7 @@ const run = (options) => {
                     References: randomUUID()
                 }
             };
-            
+
 
             const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Sending email...`).start();
 
