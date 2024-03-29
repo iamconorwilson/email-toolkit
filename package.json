@@ -18,7 +18,7 @@
     "chokidar": "^3.6.0",
     "commander": "^12.0.0",
     "connect-livereload": "^0.6.1",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "inquirer": "^9.2.15",
     "ip": "^2.0.1",
     "jsdom": "^24.0.0",
