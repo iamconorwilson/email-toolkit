@@ -38,7 +38,7 @@ const run = async () => {
 }
 
 //remove all files in build directory on first run
-await removeFiles(options.dir.dest + '/**/*');
+// await removeFiles(options.dir.dest + '/**/*');
 
 const debouncedRun = debounce(run, 500);
 
