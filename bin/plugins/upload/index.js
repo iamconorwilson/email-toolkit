@@ -1,10 +1,11 @@
 import inquirer from "inquirer";
 import fs from "fs";
-import { JSDOM } from "jsdom";
+import * as cheerio from "cheerio";
 import sftp from "ssh2-sftp-client";
 import ora from 'ora';
 import chalk from 'chalk';
 import { loadConfig } from "../../functions.js";
+
 
 const command = (program) => {
     program
@@ -54,11 +55,19 @@ const run = (options) => {
 
         const html = fs.readFileSync(filePath, 'utf8');
 
-        const dom = new JSDOM(html);
+        const $ = cheerio.load(html);
 
-        const images = dom.window.document.querySelectorAll('img');
+        const HTMLimages = $('img');
 
-        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Images found: ${images.length}`;
+        const CSSimages = [];
+
+        const cssUrlRegex = /url\(([^)]+)\)/g;
+        let match;
+        while ((match = cssUrlRegex.exec(html)) !== null) {
+            CSSimages.push(match[1]);
+        }
+
+        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Images found: ${HTMLimages.length + CSSimages.length}`;
 
         const client = new sftp();
 
@@ -87,36 +96,41 @@ const run = (options) => {
             console.log(err);
         }
 
-        for (let img of images) {
-            let src = img.getAttribute('src');
+        const ftpPaths = {
+            baseRemotePath,
+            location,
+            publicUrl
+        }
+
+        for (let img of HTMLimages) {            
+            let src = $(img).attr('src');
             //if src does not start with http, it's a local file
             if (!src.startsWith('http')) {
                 let imgPath = `${process.cwd()}/${src}`;
                 //remove filename from src
-
-                let remotePath = `${baseRemotePath}/${location}/${src.split('/').slice(0, -1).join('/')}/`;
-                let remoteFile = `${baseRemotePath}/${location}/${src}`;
-                try {
-                    spinner.text = `[${chalk.magentaBright('email-pipeline')}] Uploading ${src}...`;
-                    await client.mkdir(remotePath, true);
-                    await client.put(imgPath, remoteFile);
-                } catch (err) {
-                    console.log(err);
-                }
-                const newSrc = `${publicUrl}${src}`;
-                img.setAttribute('src', newSrc);
+                const newSrc = await uploadFile(client, src, imgPath, ftpPaths, spinner);
+                $(img).attr('src', newSrc);
             }
         }
 
+        let modifiedHtml = $.html();
+
+        for (let img of CSSimages) {
+            let src = img.replace(/['"]+/g, '');
+            //if src does not start with http, it's a local file
+            if (!src.startsWith('http')) {
+                let imgPath = `${process.cwd()}/${src}`;
+                //remove filename from src
+                const newSrc = await uploadFile(client, src, imgPath, ftpPaths, spinner);
+                modifiedHtml = modifiedHtml.replace(src, newSrc);
+            }
+        }
+
+
         spinner.text = `[${chalk.magentaBright('email-pipeline')}] Writing HTML file...`;
 
-        //remove tbody tags from serialized dom with regex
-        let htmlString = dom.serialize();
-
-        htmlString = htmlString.replace(/<\/?tbody>/g, '');
-
         //write the file
-        fs.writeFileSync(filePath, htmlString, 'utf8');
+        fs.writeFileSync(filePath, modifiedHtml, 'utf8');
 
         await client.put(filePath, `${baseRemotePath}/${location}/${file}`);
 
@@ -131,6 +145,22 @@ const run = (options) => {
 
     });
 
+}
+
+const uploadFile = async (client, src, imgPath, ftpPaths, spinner) => {
+
+    const { baseRemotePath, location, publicUrl } = ftpPaths;
+
+    let remotePath = `${baseRemotePath}/${location}/${src.split('/').slice(0, -1).join('/')}/`;
+    let remoteFile = `${baseRemotePath}/${location}/${src}`;
+    try {
+        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Uploading ${src}...`;
+        await client.mkdir(remotePath, true);
+        await client.put(imgPath, remoteFile);
+    } catch (err) {
+        console.log(err);
+    }
+    return `${publicUrl}${src}`;
 }
 
 export default command;
