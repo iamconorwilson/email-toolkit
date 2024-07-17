@@ -9,5 +9,8 @@
         "password": "xxx",
         "base_path": "xxx",
         "public_url": "xxx"
+    },
+    "clean": {
+        "opts": {}
     }
 }
