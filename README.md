@@ -1,4 +1,4 @@
-# Email Pipeline
+# Email Toolkit
 A suite of command line tools tailored for email development
 
 ## Installation
