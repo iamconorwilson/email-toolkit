@@ -1,11 +1,10 @@
 import inquirer from "inquirer";
 import fs from "fs";
-import * as cheerio from "cheerio";
 import sftp from "ssh2-sftp-client";
 import ora from 'ora';
 import chalk from 'chalk';
 import { loadConfig } from "../../functions.js";
-
+import { htmlReplace, cssReplace } from "./functions/replace.js";
 
 const command = (program) => {
     program
@@ -14,7 +13,6 @@ const command = (program) => {
         .action((options) => {
             run(options);
         });
-
 }
 
 const run = (options) => {
@@ -40,7 +38,10 @@ const run = (options) => {
         }
     ]).then(async (answers) => {
 
-        const { file, location } = answers;
+        const { file, location: inputLocation } = answers;
+
+        //if location does not have a trailing slash, add one
+        const location = inputLocation.endsWith('/') ? inputLocation : `${inputLocation}/`;
 
         const credentials = config.upload;
 
@@ -53,111 +54,75 @@ const run = (options) => {
 
         const spinner = ora(`[${chalk.magentaBright('email-toolkit')}] Uploading HTML...`).start();
 
-        const html = fs.readFileSync(filePath, 'utf8');
+        let originalHtml = fs.readFileSync(filePath, 'utf8');
 
-        const $ = cheerio.load(html);
+        const destUrl = `${config.upload.public_url}/${location}`;
 
-        const HTMLimages = $('img');
+        // Replace HTML
+        const { html: html1, images: htmlimages } = htmlReplace(originalHtml, destUrl);
 
-        const CSSimages = [];
+        // Replace CSS
+        const { html: html2, images: cssimages } = cssReplace(html1, destUrl);
 
-        const cssUrlRegex = /url\(([^)]+)\)/g;
-        let match;
-        while ((match = cssUrlRegex.exec(html)) !== null) {
-            CSSimages.push(match[1]);
-        }
+        const imgArr = [...htmlimages, ...cssimages];
 
-        spinner.text = `[${chalk.magentaBright('email-toolkit')}] Images found: ${HTMLimages.length + CSSimages.length}`;
+        const images = [...new Set(imgArr)];
+
+        fs.writeFileSync(filePath, html2);
+
+        const ftpPaths = {
+            baseRemotePath: config.upload.base_path,
+            publicUrl: config.upload.public_url,
+            location: location
+        };
 
         const client = new sftp();
-
-        const baseRemotePath = credentials.base_path;
-
-        const basePublicUrl = credentials.public_url;
-
-        let publicUrl = basePublicUrl.endsWith('/') ? basePublicUrl : `${basePublicUrl}/`;
-
-        publicUrl = publicUrl + (location.startsWith('/') ? location.slice(1) : location);
-
-        publicUrl = publicUrl.endsWith('/') ? publicUrl : `${publicUrl}/`;
 
         try {
             await client.connect({
                 host: credentials.host,
-                user: credentials.user,
-                password: credentials.password,
+                username: credentials.user,
+                password: credentials.password
             });
 
-            if (await client.exists(`${baseRemotePath}/${location}`) === false) {
-                await client.mkdir(`${baseRemotePath}/${location}`, true);
+            if (await client.exists(`${ftpPaths.baseRemotePath}/${location}`) === false) {
+                await client.mkdir(`${ftpPaths.baseRemotePath}/${location}`, true);
             }
-
         } catch (err) {
             console.log(err);
         }
 
-        const ftpPaths = {
-            baseRemotePath,
-            location,
-            publicUrl
+
+
+        for (let img of images) {
+            await uploadFile(client, img, `${process.cwd()}/${img}`, ftpPaths, spinner);
         }
-
-        for (let img of HTMLimages) {            
-            let src = $(img).attr('src');
-            //if src does not start with http, it's a local file
-            if (!src.startsWith('http')) {
-                let imgPath = `${process.cwd()}/${src}`;
-                //remove filename from src
-                const newSrc = await uploadFile(client, src, imgPath, ftpPaths, spinner);
-                $(img).attr('src', newSrc);
-            }
-        }
-
-        let modifiedHtml = $.html();
-
-        //reverse cssimages so we can replace them in reverse order
-        CSSimages.reverse();
-
-        for (let img of CSSimages) {
-            let src = img.replace(/['"]+/g, '');
-            //if src does not start with http, it's a local file
-            if (!src.startsWith('http')) {
-                let imgPath = `${process.cwd()}/${src}`;
-                //remove filename from src
-                const newSrc = await uploadFile(client, src, imgPath, ftpPaths, spinner);
-                modifiedHtml = modifiedHtml.replace(src, newSrc);
-            }
-        }
-
 
         spinner.text = `[${chalk.magentaBright('email-toolkit')}] Writing HTML file...`;
 
-        //write the file
-        fs.writeFileSync(filePath, modifiedHtml, 'utf8');
-
-        await client.put(filePath, `${baseRemotePath}/${location}/${file}`);
-
+        await client.put(filePath, `${ftpPaths.baseRemotePath}/${location}${file}`);
+        
         client.end();
 
-        let uploadedFile = new URL(publicUrl + file);
+        let uploadedFile = new URL(`${ftpPaths.publicUrl}/${location}${file}`);
 
-    
         spinner.succeed(`[${chalk.magentaBright('email-toolkit')}] Upload complete! File available at: ${chalk.underline(uploadedFile)}`);
 
         process.exit(0);
 
     });
-
+        
 }
 
 const uploadFile = async (client, src, imgPath, ftpPaths, spinner) => {
 
     const { baseRemotePath, location, publicUrl } = ftpPaths;
 
-    let remotePath = `${baseRemotePath}/${location}/${src.split('/').slice(0, -1).join('/')}/`;
-    let remoteFile = `${baseRemotePath}/${location}/${src}`;
+    let remotePath = `${baseRemotePath}/${location}${src.split('/').slice(0, -1).join('/')}/`;
+    let remoteFile = `${baseRemotePath}/${location}${src}`;
     try {
         spinner.text = `[${chalk.magentaBright('email-toolkit')}] Uploading ${src}...`;
+
         await client.mkdir(remotePath, true);
         await client.put(imgPath, remoteFile);
     } catch (err) {
