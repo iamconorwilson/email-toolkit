@@ -17,7 +17,7 @@ const command = (program) => {
 }
 
 const run = async (options) => {
-    console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Send')}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Send')}`);
 
     let filePath = '';
 
@@ -60,14 +60,14 @@ const run = async (options) => {
     //get file name from path
     let fileName = filePath.split('/').pop();
 
-    console.log(`[${chalk.magentaBright('email-pipeline')}] Sending file: ${fileName}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] Sending file: ${fileName}`);
 
     //read secret from secrets.json in root of package
     let credentials = config.send;
 
     //if no credentials, exit and warn user
     if (!credentials) {
-        console.error(`[${chalk.magentaBright('email-pipeline')}] No credentials found in config file.`);
+        console.error(`[${chalk.magentaBright('email-toolkit')}] No credentials found in config file.`);
         process.exit(1);
     }
 
@@ -89,7 +89,7 @@ const run = async (options) => {
         from: credentials.test_email,
         to: to,
         subject: `Test Email: ${fileName}`,
-        text: 'This is a test email sent from Email Pipeline! If you are seeing this, change your client settings to view the HTML part of this email.',
+        text: 'This is a test email sent from Email Toolkit! If you are seeing this, change your client settings to view the HTML part of this email.',
         html: fileContents,
         headers: {
             References: randomUUID()
@@ -97,13 +97,13 @@ const run = async (options) => {
     };
 
 
-    const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Sending email...`).start();
+    const spinner = ora(`[${chalk.magentaBright('email-toolkit')}] Sending email...`).start();
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            spinner.fail(`[${chalk.magentaBright('email-pipeline')}] Error sending email: ${error}`);
+            spinner.fail(`[${chalk.magentaBright('email-toolkit')}] Error sending email: ${error}`);
         } else {
-            spinner.succeed(`[${chalk.magentaBright('email-pipeline')}] Email sent: ${info.messageId}`);
+            spinner.succeed(`[${chalk.magentaBright('email-toolkit')}] Email sent: ${info.messageId}`);
         }
     });
     process.exit(0);

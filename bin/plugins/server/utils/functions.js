@@ -12,7 +12,7 @@ const serverLog = (port, qr) => {
     let ext = `http://${address()}:${port}`;
 
     console.log(
-        `[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Development server started')}
+        `[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Development server started')}
 ------------------------------------
 ${chalk.blue('Local')}: ${local}
 ${chalk.blue('Network')}: ${ext}
@@ -24,12 +24,12 @@ ${chalk.blue('Network')}: ${ext}
             console.log(qrcode);
         })
     }
-    console.log(`[${chalk.magentaBright('email-pipeline')}] Watching files...`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] Watching files...`);
 }
 
 //generic log function
 const log = (msg) => {
-    console.log(`[${chalk.magentaBright('email-pipeline')}] ${msg}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] ${msg}`);
 }
 
 //debounce
@@ -57,10 +57,10 @@ const createLRServer = (lrport) => {
     const rfrsh = () => {
         process.stdout.moveCursor(0, -1);
         process.stdout.clearLine();
-        const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Refreshing files...`).start();
+        const spinner = ora(`[${chalk.magentaBright('email-toolkit')}] Refreshing files...`).start();
         lrserver.refresh('*')
         setTimeout(() => {
-            spinner.succeed(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Files refreshed')}`);
+            spinner.succeed(`[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Files refreshed')}`);
         }, 500);
     }
 

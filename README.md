@@ -7,17 +7,17 @@ A suite of command line tools tailored for email development
 
 ## Commands
 ### config
-Syntax: `emlpipe config`
+Syntax: `emltool config`
 
-Creates `email-pipline.config.json` config file in the user directory.
+Creates `email-toolkit.config.json` config file in the user directory.
 
 ### send
-Syntax: `emlpipe send`
+Syntax: `emltool send`
 
 Send tests of HTML emails from the command line, using SMTP credentials set up using the config command.
 
 ### serve
-Syntax: `emlpipe serve`
+Syntax: `emltool serve`
 
 Options:
 * `-p, --port <number>`: Port to use (default: 3000)
@@ -26,6 +26,6 @@ Options:
 Run local development server to preview emails. Also allows for a QR code to be displayed in the terminal for easier previews on a mobile device (must be connected to the same network as host PC).
 
 ### upload
-Syntax: `emlpipe upload`
+Syntax: `emltool upload`
 
 Select a local HTML file and specify a path on the remote server, and the file will be uploaded along with all locally hosted images. Image src URLs will also be replaced with the new remote URL.

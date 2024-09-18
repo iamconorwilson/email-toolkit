@@ -18,7 +18,7 @@ const command = (program) => {
 }
 
 const run = (options) => {
-    console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Upload')}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Upload')}`);
 
     let filePath = '';
 
@@ -45,13 +45,13 @@ const run = (options) => {
         const credentials = config.upload;
 
         if (!credentials) {
-            console.error(`[${chalk.magentaBright('email-pipeline')}] No credentials found in config file.`);
+            console.error(`[${chalk.magentaBright('email-toolkit')}] No credentials found in config file.`);
             process.exit(1);
         }
 
         filePath = `${process.cwd()}/${file}`;
 
-        const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Uploading HTML...`).start();
+        const spinner = ora(`[${chalk.magentaBright('email-toolkit')}] Uploading HTML...`).start();
 
         const html = fs.readFileSync(filePath, 'utf8');
 
@@ -67,7 +67,7 @@ const run = (options) => {
             CSSimages.push(match[1]);
         }
 
-        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Images found: ${HTMLimages.length + CSSimages.length}`;
+        spinner.text = `[${chalk.magentaBright('email-toolkit')}] Images found: ${HTMLimages.length + CSSimages.length}`;
 
         const client = new sftp();
 
@@ -115,6 +115,9 @@ const run = (options) => {
 
         let modifiedHtml = $.html();
 
+        //reverse cssimages so we can replace them in reverse order
+        CSSimages.reverse();
+
         for (let img of CSSimages) {
             let src = img.replace(/['"]+/g, '');
             //if src does not start with http, it's a local file
@@ -127,7 +130,7 @@ const run = (options) => {
         }
 
 
-        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Writing HTML file...`;
+        spinner.text = `[${chalk.magentaBright('email-toolkit')}] Writing HTML file...`;
 
         //write the file
         fs.writeFileSync(filePath, modifiedHtml, 'utf8');
@@ -139,7 +142,7 @@ const run = (options) => {
         let uploadedFile = new URL(publicUrl + file);
 
     
-        spinner.succeed(`[${chalk.magentaBright('email-pipeline')}] Upload complete! File available at: ${chalk.underline(uploadedFile)}`);
+        spinner.succeed(`[${chalk.magentaBright('email-toolkit')}] Upload complete! File available at: ${chalk.underline(uploadedFile)}`);
 
         process.exit(0);
 
@@ -154,7 +157,7 @@ const uploadFile = async (client, src, imgPath, ftpPaths, spinner) => {
     let remotePath = `${baseRemotePath}/${location}/${src.split('/').slice(0, -1).join('/')}/`;
     let remoteFile = `${baseRemotePath}/${location}/${src}`;
     try {
-        spinner.text = `[${chalk.magentaBright('email-pipeline')}] Uploading ${src}...`;
+        spinner.text = `[${chalk.magentaBright('email-toolkit')}] Uploading ${src}...`;
         await client.mkdir(remotePath, true);
         await client.put(imgPath, remoteFile);
     } catch (err) {

@@ -1,11 +1,11 @@
 {
-  "name": "email-pipeline-lite",
+  "name": "email-toolkit",
   "version": "0.0.3",
   "description": "A suite of command line tools tailored for email development",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "emlpipe": "./bin/index.js"
+    "emltool": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

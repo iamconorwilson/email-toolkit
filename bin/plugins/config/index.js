@@ -19,10 +19,10 @@ const command = (program) => {
 }
 
 const run = async () => {
-    console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Config')}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Config')}`);
     
     //check for existing config file
-    const configFile = path.join(homeDirectory, '.email-pipeline.config.json');
+    const configFile = path.join(homeDirectory, '.email-toolkit.config.json');
 
     //if config file exists, ask user if they want to overwrite
     if (fs.existsSync(configFile)) {
@@ -36,7 +36,7 @@ const run = async () => {
         ]);
 
         if (!answers.overwrite) {
-            console.log(`[${chalk.magentaBright('email-pipeline')}] Existing config file not overwritten.`);
+            console.log(`[${chalk.magentaBright('email-toolkit')}] Existing config file not overwritten.`);
             process.exit(0);
         }
     }
@@ -48,7 +48,7 @@ const run = async () => {
 
 const createConfig = (configFile) => {
     fs.copyFileSync(path.join(rootDirectory, '../../../config.json.example'), configFile);
-    console.log(`[${chalk.magentaBright('email-pipeline')}] Config file created at ${configFile}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] Config file created at ${configFile}`);
 }
 
 export default command;

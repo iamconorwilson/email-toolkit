@@ -17,7 +17,7 @@ const command = (program) => {
 }
 
 const run = (options) => {
-    console.log(`[${chalk.magentaBright('email-pipeline')}] ${chalk.bold('Upload')}`);
+    console.log(`[${chalk.magentaBright('email-toolkit')}] ${chalk.bold('Upload')}`);
 
     const filesList = fs.readdirSync(process.cwd());
 
@@ -36,12 +36,12 @@ const run = (options) => {
 
         // const options = config.clean?.opts || null;
 
-        const spinner = ora(`[${chalk.magentaBright('email-pipeline')}] Cleaning ${files.length} files`).start();
+        const spinner = ora(`[${chalk.magentaBright('email-toolkit')}] Cleaning ${files.length} files`).start();
 
         for (let file of files) {
             const filePath = `${process.cwd()}/${file}`;
 
-            spinner.text = `[${chalk.magentaBright('email-pipeline')}] Cleaning file: ${file}`;
+            spinner.text = `[${chalk.magentaBright('email-toolkit')}] Cleaning file: ${file}`;
 
             const html = fs.readFileSync(filePath, 'utf8');
 
@@ -56,16 +56,16 @@ const run = (options) => {
 
             const modifiedHtml = comb(fileString, combOpts);
 
-            spinner.text = `[${chalk.magentaBright('email-pipeline')}] Writing HTML file...`;
+            spinner.text = `[${chalk.magentaBright('email-toolkit')}] Writing HTML file...`;
 
             //write the file
             fs.writeFileSync(filePath, modifiedHtml.result, 'utf8');
 
-            spinner.text = `[${chalk.magentaBright('email-pipeline')}] File cleaned: ${file}`;
+            spinner.text = `[${chalk.magentaBright('email-toolkit')}] File cleaned: ${file}`;
 
         }
 
-        spinner.succeed(`[${chalk.magentaBright('email-pipeline')}] All files cleaned`);
+        spinner.succeed(`[${chalk.magentaBright('email-toolkit')}] All files cleaned`);
 
         //once all files are cleaned, exit process
         process.exit(0);
